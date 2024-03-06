@@ -1,0 +1,10 @@
+(let ((mel-data mel-data)) ;; Prevent articles overwriting mel-data
+  `(.articles
+    ,@(cl-loop with article-template = (expand-file-name "../templates/article.htmel")
+               with articles = (nthcdr 2 (directory-files (expand-file-name "./articles") 'full))
+               for article in (reverse (cl-sort (cl-subseq articles 0 (min (length articles) 3))
+                                                #'time-less-p :key (lambda (f)
+                                                                     (file-attribute-modification-time
+                                                                      (file-attributes f)))))
+               do (mel-set 'article article)
+               collect (mel-read article-template))))

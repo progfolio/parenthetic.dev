@@ -1,0 +1,13 @@
+(let ((content (mel-read (mel-get 'article 'err)))) ;; reader sets `mel-data'
+  (message "setting article type")
+  (mel-set 'type 'article)
+  `(article
+    ,@(when-let ((title (mel-get 'title))
+                 (base (file-name-base (file-name-sans-extension (mel-get 'file)))))
+        `((h2 (a[:href ,(format "/articles/%s.html" (slug title))] ,title))))
+    ,@(let ((date (mel-get 'date))
+            (tags (mel-get 'tags)))
+        (when (or date tags)
+          `((aside ,@(when date `((time[:datetime ,date] ,date)))
+                   ,@(when tags `((ul ,@(cl-loop for tag in tags collect `(li ,tag)))))))))
+    ,content))

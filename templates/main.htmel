@@ -1,0 +1,34 @@
+;; -*- lexical-binding: t; -*-
+(let ((title (mel-get 'title)))
+  `( html [:lang "en"]
+     (head
+      (meta [:charset UTF-8])
+      (meta [:name "viewport" :content "width=device-width, intial-scale=1.0"])
+      ,@(when title `((meta [:property "og:title" :content ,(format "%s" title)])))
+      (meta [:property "og:type" :og-type ,(or (mel-get 'type)
+                                               (if (string-match-p "articles/" (mel-get 'url))
+                                                   "article" "website"))])
+      (meta [:property "og:site_name" :content "(Parenthetic Dev)"])
+      (meta [:property "og:url" :content ,(mel-get 'url 'err)])
+      (meta [ :property "og:image"
+              :content "https://www.parenthetic.dev/assets/images/open-graph.png"])
+      (meta [ :property "og:description"
+              :content ,(or (mel-get 'description) (concat user-full-name "'s website"))])
+      (link [ :rel "icon" :type "image/x-icon" :href "/assets/images/favicon.ico"])
+      (link [ :rel "stylesheet"
+              :href "https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"])
+      (link [ :rel "stylesheet" :href "/assets/css/main.css"])
+      (title "Parenthetic Dev"))
+     (body
+      (header (h1 (a [:href "/"] "Parenthetic Dev")))
+      (nav ,@(cl-loop for (page . href) in
+                      '(("about") ("projects" . "https://www.github.com/progfolio/") ("tags"))
+                      collect `(a [:href ,(or href (concat "/" page))] ,page)))
+      (main@content
+       ,@(when title `((h2 ,title)))
+       ,@(when-let ((date (mel-get 'date))) `((.page-info "✍ " (time[:datetime ,date] ,date))))
+       ;;Handle readers which return single spec or list of specs
+       ,@(let ((content (mel-get 'content 'err)))
+           (if (symbolp (car content)) (list content) content))
+       (footer
+        (p "Author: " ,user-full-name " " (a [:href ,(concat "mailto:" user-mail-address)] ,user-mail-address)))))))

@@ -1,0 +1,3 @@
+'(p ,(format "You've reached the website of %s." user-full-name)
+    " I'm interested in programming, music, comedy, and puzzles."
+    "  Please have fun and remember, I'm human, too.")

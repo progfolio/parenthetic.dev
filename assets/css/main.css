@@ -1,0 +1,98 @@
+body {
+    background-color: #202020;
+    color: #edeec0; 
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    font-family: "Mono";
+}
+
+h1 {
+    font-family: monospace;
+    text-align: center;
+   }
+
+h1::before {
+    content: "(";
+}
+
+h1::after {
+    content: ")";
+}
+
+h1 a {
+    text-decoration: none;
+}
+
+#content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2em;
+    flex: 1 0 auto;
+}
+
+footer {
+    position: sticky;
+    top: 100vh;
+}
+
+article {
+    background-color: #0d0807;
+    color: #edeec0;
+}
+
+pre {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    white-space: pre-wrap;
+    background-color: #101010;
+    /* margin: 0 auto;  */
+    padding: 2em;
+}
+
+pre::before {
+    counter-reset: linenum;
+}
+
+/* syntax highlighting */
+
+.function-name {
+    color: #909090;
+    font-weight: bold;
+}
+
+.keyword {
+    color: #dd2244;
+    font-weight: bold;
+}
+
+.builtin, .markdown-metadata-key {
+    color: #FFFFFF;
+}
+
+.string, .markdown-metadata-value {
+    color: #dd2244;
+    font-style: italic;
+}
+
+.comment {
+    font-style: italic;
+    color: #FFAABB;
+}
+
+.markdown-markup {
+    color: #FFAABB;
+}
+
+.constant {
+    font-weight: bold;
+}
+
+
+nav {
+    padding: 2em;
+}

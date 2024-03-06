@@ -1,0 +1,64 @@
+name: Publish to Github Pages
+on:
+  push:
+    branches:
+      - master
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Install git, pandoc
+        run: sudo apt-get install -y git pandoc
+
+      # - name: Cache Emacs - Get
+      #   id: cache-emacs
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /home/runner/.local/nix/store-emacs-29-2
+      #     key: ${{ runner.os }}-emacs-29-2
+
+      # - name: Cache emacs - Hit
+      #   if: steps.cache-emacs.outputs.cache-hit == 'true'
+      #   run: |
+      #     sudo mkdir -p /nix/store
+      #     sudo ln -s $HOME/.local/nix/store-emacs-29-2/* /nix/store/
+      #     emacs_store=$(find /nix/store -name "*-emacs-29-2")
+      #     ls -lah /nix/store
+      #     test -x $emacs_store/bin/emacs
+      #     echo "$emacs_store/bin" >> $GITHUB_PATH
+
+      - name: Install Emacs
+        uses: purcell/setup-emacs@master
+        #if: steps.cache-emacs.outputs.cache-hit != 'true'
+        with:
+          version: 29.2
+
+      # - name: Cache Emacs - Miss - Put
+      #   if: steps.cache-emacs.outputs.cache-hit != 'true'
+      #   run: |
+      #     ls -l `which emacs`
+      #     emacs --version
+      #     mkdir -p $HOME/.local/nix/store-emacs-29-2
+      #     nix-store --query --requisites $(which emacs) | xargs -I {} rsync -av {} $HOME/.local/nix/store-emacs-29-2
+
+      - name: Build site
+        working-directory: "./.emacs.d"
+        run: |
+          emacs --batch -L . -l init.el
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3.0.1
+        with:
+          path: ./build
+
+      - name: Deploy artifact
+        uses: actions/deploy-pages@v4.0.5
+
+
