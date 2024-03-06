@@ -1,0 +1,29 @@
+name: Publish to Github Pages
+on:
+  push:
+    branches:
+      - master
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+
+      - name: Install Emacs
+        uses: purcell/setup-emacs@master
+        with:
+          version: 29.2
+
+      - name: Build site
+        run: |
+          emacs --batch -L ./.emacs.d -l ./.emacs.d/init.el
+      
+      - name: Publish site
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          folder: .
+          branch: gh-pages
+
