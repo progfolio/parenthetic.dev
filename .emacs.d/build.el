@@ -20,36 +20,22 @@
 
 ;;; Commentary:
 
-;;
+;; 
 
 ;;; Code:
-(require 'dom)
-(require 'ox-publish)
-(require 'subr-x)
-(require 'cl-lib)
-
-(defun build-youtube-embed (id)
-  "Return embedded video HTML from ID."
-  (build-html-string
-   `(div [class video]
-         (iframe [ src ,(concat "https://www.youtube.com/embed/" id)
-                   allow  fullscreen]))))
-
-(defun build-article-path (file dir)
-  "Return article path for FILE at DIR."
-  (let ((article (concat dir (downcase
-                              (file-name-as-directory
-                               (file-name-sans-extension
-                                (file-name-nondirectory file)))))))
-
-    (if (string-match-p (concat (regexp-opt '("index.org" "404.org")) "\\'") file)
-        dir
-      (make-directory article t)
-      article)))
+;; (require 'elpaca-installer)
+;; (elpaca htmlize)
 
 (defun build-site ()
   "Build the site."
-  (interactive))
+  (interactive)
+  (with-current-buffer (get-buffer-create "index.html")
+    (erase-buffer)
+    (let ((standard-output (current-buffer))
+          print-circle print-level print-length)
+      (insert "<!DOCTYPE html>\n")
+      (insert "<html><head><title>(Parenthetic Dev)</title></head><body><h1>HELLO</h1></body></html>")
+  (write-file "./index.html"))))
 
 (provide 'build)
 ;;; build.el ends here
