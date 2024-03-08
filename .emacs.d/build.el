@@ -34,7 +34,7 @@
     (let ((standard-output (current-buffer))
           print-circle print-level print-length)
       (insert "<!DOCTYPE html>\n")
-      (insert "<html><head><title>(Parenthetic Dev)</title></head><body><h1>HELLO</h1></body></html>")
+      (insert "<html><head><title>(Parenthetic Dev)</title></head><body><h1>HELLO, AGAIN</h1></body></html>")
   (write-file "./index.html"))))
 
 (provide 'build)
