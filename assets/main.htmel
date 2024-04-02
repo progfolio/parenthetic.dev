@@ -1,0 +1,23 @@
+;; -*- lexical-binding: t; -*-
+(require 'mel)
+(let ((content (mel-read (mel-get 'content)))
+      (title (mel-get 'title 'noerror)))
+  `( html[:lang "en"]
+     (head
+      (meta[:charset UTF-8])
+      (link [ :rel "stylesheet"
+              :href "https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"])
+      (link [ :rel "stylesheet"
+              :href "./assets/css/main.css"])
+      (title ,(concat (when title (concat title  " - ")) "Parenthetic Dev")))
+     (body
+      (header (h1 (a [:href "/"] "Parenthetic Dev")))
+      (nav ,@(cl-loop for (page . href) in
+                      '(("about") ("projects" . "https://www.github.com/progfolio/") ("tags"))
+                      collect `(li (a [:href ,(or href (concat "/" page))] ,page))))
+      (main@content
+       ,@(when title `((h2 ,title)))
+       ,@content)
+      (footer
+       (p "Author: " ,user-full-name)
+       (p (a [:href ,(concat "mailto:" user-mail-address)] ,user-mail-address))))))

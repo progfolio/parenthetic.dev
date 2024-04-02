@@ -16,11 +16,9 @@
 
 (message "Building from %s" (expand-file-name user-emacs-directory))
 
-(with-current-buffer (get-buffer-create "index.html")
-  (erase-buffer)
-  (let ((standard-output (current-buffer))
-        print-circle print-level print-length)
-    (insert
-     "<!DOCTYPE html>\n"
-     (apply #'mel (mel-read "./.emacs.d/parking-page.mel")))
+(with-temp-buffer
+  (let* ((mel-data '((content . "./landing-page.mel")))
+         (mel-print-compact t))
+    (insert (mel '(:raw "<!DOCTYPE html>\n")
+                 (mel-read "./assets/main.htmel")))
     (write-file "./index.html")))
