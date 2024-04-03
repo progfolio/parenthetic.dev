@@ -36,3 +36,8 @@ h1 a {
 footer {
     flex-shrink: 0;
 }
+
+article {
+    background-color: #0d0807;
+    color: #edeec0;
+}

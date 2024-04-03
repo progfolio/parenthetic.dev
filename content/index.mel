@@ -1,0 +1,9 @@
+;;(ignore (setq mel-data '((title . "Mel"))))
+`(p "Test landing page")
+`(.articles
+  ,@(cl-loop
+    with articles = (directory-files "./articles" 'full ".md")
+    for article in (cl-subseq articles 0 (min (length articles) 3))
+    collect (let ((mel-data `((content . ,(mel-read article))
+                              (title . ,(file-name-nondirectory article)))))
+              (mel-read "../templates/article.htmel"))))

@@ -1,0 +1,10 @@
+`(article
+  ,@(when-let ((title (mel-get 'title 'noerror))) `((h2 (a[:href
+                                                           ,(format "/articles/%s.html"
+                                                                    (file-name-sans-extension title))]
+                                                          ,title))))
+  (aside
+   ,@(when-let ((time (mel-get 'time 'noerror))) `((time[:datetime ,time] ,time)))
+   ,@(when-let ((tags (mel-get 'tags 'noerror)))
+       `((ul ,@(cl-loop for tag in tags collect `(li ,tag))))))
+  ,(mel-get 'content))
